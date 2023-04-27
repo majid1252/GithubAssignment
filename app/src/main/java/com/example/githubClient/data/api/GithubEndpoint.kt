@@ -1,5 +1,4 @@
 package com.example.githubClient.data.api
-import GithubApi
 import com.example.githubClient.common.Constants
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
