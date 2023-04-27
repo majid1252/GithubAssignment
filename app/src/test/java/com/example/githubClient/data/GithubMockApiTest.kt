@@ -1,3 +1,5 @@
+import com.example.githubClient.data.api.GithubApi
+import com.example.githubClient.data.model.IGithubBaseUser
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -61,7 +63,7 @@ class GithubMockApiTest {
         assertTrue(response.isSuccessful)
 
         // Print API response
-        val users: List<GithubUser>? = response.body()
+        val users: List<IGithubBaseUser>? = response.body()
         users?.forEach { user ->
             println("User: $user")
         }
