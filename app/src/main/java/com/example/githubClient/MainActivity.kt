@@ -10,11 +10,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.githubClient.core.platform.BaseActivity
+import com.example.githubClient.databinding.ActivityMainBinding
 import com.example.githubClient.ui.theme.GithubAssignmentTheme
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
+class MainActivity : BaseActivity<ActivityMainBinding>() {
+    override fun getBinding() = ActivityMainBinding.inflate(layoutInflater)
 }
