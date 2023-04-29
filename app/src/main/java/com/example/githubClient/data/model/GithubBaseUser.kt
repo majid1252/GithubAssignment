@@ -1,8 +1,13 @@
 package com.example.githubClient.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
+
+@Entity(tableName = "github_users")
 data class GithubBaseUser(
+    @PrimaryKey @SerializedName("id") override val id: Int,
     override val login: String,
-    override val id: Int,
     override val node_id: String,
     override val avatar_url: String,
     override val gravatar_id: String,
