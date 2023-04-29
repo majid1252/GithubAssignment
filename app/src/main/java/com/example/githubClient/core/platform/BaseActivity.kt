@@ -2,6 +2,7 @@ package com.example.githubClient.core.platform
 
 import android.os.Bundle
 import android.os.PersistableBundle
+import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -14,7 +15,7 @@ import com.example.githubClient.core.architecture.viewModel.ViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), MavericksView {
+abstract class BaseActivity<VB : ViewBinding> : ComponentActivity(), MavericksView {
 
     private lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -29,8 +30,8 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), MavericksVi
     protected val views: VB
         get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(getBinding().root)
     }
 

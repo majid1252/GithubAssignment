@@ -1,6 +1,7 @@
 package com.example.githubClient
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,4 +17,5 @@ import com.example.githubClient.ui.theme.GithubAssignmentTheme
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun getBinding() = ActivityMainBinding.inflate(layoutInflater)
+
 }
