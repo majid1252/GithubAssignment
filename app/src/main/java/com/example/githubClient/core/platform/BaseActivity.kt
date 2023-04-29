@@ -1,17 +1,15 @@
 package com.example.githubClient.core.platform
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.activity.ComponentActivity
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.airbnb.mvrx.MavericksView
-import com.example.githubClient.core.architecture.viewModel.QViewEvent
-import com.example.githubClient.core.architecture.viewModel.ViewModel
+import com.example.githubClient.core.architecture.viewModel.ViewEvent
+import com.example.githubClient.core.architecture.viewModel.GViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -32,7 +30,8 @@ abstract class BaseActivity<VB : ViewBinding> : ComponentActivity(), MavericksVi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(getBinding().root)
+        _binding = getBinding()
+        setContentView(_binding?.root)
     }
 
     abstract fun getBinding(): VB
@@ -43,7 +42,7 @@ abstract class BaseActivity<VB : ViewBinding> : ComponentActivity(), MavericksVi
         Timber.v("invalidate() method has not been implemented")
     }
 
-    protected fun <T : QViewEvent> ViewModel<*, *, T>.observeViewEvents(
+    protected fun <T : ViewEvent> GViewModel<*, *, T>.observeViewEvents(
             observer: (T) -> Unit,
     ) {
         val tag = this@BaseActivity::class.simpleName.toString()

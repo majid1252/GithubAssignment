@@ -3,7 +3,7 @@ package com.example.githubClient.core.architecture.viewModel
 import com.airbnb.mvrx.MavericksState
 import com.airbnb.mvrx.MavericksViewModel
 
-abstract class ViewModel<S : MavericksState, VA : QViewModelAction, VE : QViewEvent>(initialState: S) :
+abstract class GViewModel<S : MavericksState, VA : ViewModelAction, VE : ViewEvent>(initialState: S) :
         MavericksViewModel<S>(initialState) {
 
     // Used to post transient events to the View

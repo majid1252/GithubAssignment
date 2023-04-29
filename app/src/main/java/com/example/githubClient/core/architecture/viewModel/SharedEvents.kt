@@ -6,11 +6,11 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.transform
 import java.util.concurrent.CopyOnWriteArraySet
 
-interface SharedEvents<out T : QViewEvent> {
+interface SharedEvents<out T : ViewEvent> {
     fun stream(consumerId: String): Flow<T>
 }
 
-class EventQueue<T : QViewEvent>(capacity: Int) : SharedEvents<T> {
+class EventQueue<T : ViewEvent>(capacity: Int) : SharedEvents<T> {
 
     private val innerQueue = MutableSharedFlow<OneTimeEvent<T>>(replay = capacity)
 
@@ -32,7 +32,7 @@ class EventQueue<T : QViewEvent>(capacity: Int) : SharedEvents<T> {
  *
  * Keeps track of who has already handled its content.
  */
-private class OneTimeEvent<out T : QViewEvent>(private val content: T) {
+private class OneTimeEvent<out T : ViewEvent>(private val content: T) {
 
     private val handlers = CopyOnWriteArraySet<String>()
 
@@ -43,6 +43,6 @@ private class OneTimeEvent<out T : QViewEvent>(private val content: T) {
     fun getIfNotHandled(asker: String): T? = if (handlers.add(asker)) content else null
 }
 
-private fun <T : QViewEvent> Flow<OneTimeEvent<T>>.filterNotHandledBy(consumerId: String): Flow<T> = transform { event ->
+private fun <T : ViewEvent> Flow<OneTimeEvent<T>>.filterNotHandledBy(consumerId: String): Flow<T> = transform { event ->
     event.getIfNotHandled(consumerId)?.let { emit(it) }
 }
