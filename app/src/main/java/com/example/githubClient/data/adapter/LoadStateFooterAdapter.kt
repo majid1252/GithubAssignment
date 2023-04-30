@@ -1,4 +1,4 @@
-package com.example.githubClient.ui.adapter
+package com.example.githubClient.data.adapter
 
 import android.view.ViewGroup
 import androidx.paging.LoadState

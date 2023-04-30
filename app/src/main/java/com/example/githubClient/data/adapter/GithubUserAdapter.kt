@@ -1,4 +1,4 @@
-package com.example.githubClient.ui.adapter
+package com.example.githubClient.data.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +12,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubClient.R
 import com.example.githubClient.data.model.GithubBaseUser
+import com.example.githubClient.data.model.GithubUserWithLocalData
 
-class GithubUserAdapter : PagingDataAdapter<GithubBaseUser, GithubUserAdapter.ViewHolder>(USER_COMPARATOR) {
+class GithubUserAdapter : PagingDataAdapter<GithubUserWithLocalData, GithubUserAdapter.ViewHolder>(USER_COMPARATOR) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,7 +25,7 @@ class GithubUserAdapter : PagingDataAdapter<GithubBaseUser, GithubUserAdapter.Vi
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = getItem(position)
         if (user != null) {
-            holder.name.text = user.login
+            holder.name.text = user.githubUser.login
         }
     }
 
@@ -38,11 +39,11 @@ class GithubUserAdapter : PagingDataAdapter<GithubBaseUser, GithubUserAdapter.Vi
     companion object {
 
 
-        private val USER_COMPARATOR = object : DiffUtil.ItemCallback<GithubBaseUser>() {
-            override fun areItemsTheSame(oldItem: GithubBaseUser, newItem: GithubBaseUser): Boolean =
-                (oldItem.id == newItem.id) && (oldItem.login == newItem.login)
+        private val USER_COMPARATOR = object : DiffUtil.ItemCallback<GithubUserWithLocalData>() {
+            override fun areItemsTheSame(oldItem: GithubUserWithLocalData, newItem: GithubUserWithLocalData): Boolean =
+                (oldItem.githubUser.id == newItem.githubUser.id) && (oldItem.githubUser.login == newItem.githubUser.login)
 
-            override fun areContentsTheSame(oldItem: GithubBaseUser, newItem: GithubBaseUser): Boolean =
+            override fun areContentsTheSame(oldItem: GithubUserWithLocalData, newItem: GithubUserWithLocalData): Boolean =
                 oldItem == newItem
         }
     }

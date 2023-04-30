@@ -3,19 +3,24 @@ package com.example.githubClient.core.platform
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.airbnb.mvrx.MavericksView
+import com.example.githubClient.core.GithubApp
 import com.example.githubClient.core.architecture.viewModel.ViewEvent
 import com.example.githubClient.core.architecture.viewModel.GViewModel
+import com.example.githubClient.core.network.NetworkStatus
+import com.example.githubClient.core.network.NetworkStatusLiveData
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 abstract class BaseActivity<VB : ViewBinding> : ComponentActivity(), MavericksView {
 
     private lateinit var viewModelFactory: ViewModelProvider.Factory
+    val networkStatus: LiveData<NetworkStatus> = NetworkStatusLiveData(GithubApp.getContext())
 
     protected val activityViewModelProvider
         get() = ViewModelProvider(this, viewModelFactory)

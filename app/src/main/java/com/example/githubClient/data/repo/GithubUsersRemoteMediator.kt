@@ -6,6 +6,7 @@ import androidx.room.withTransaction
 import com.example.githubClient.data.api.GithubApi
 import com.example.githubClient.data.db.GithubDatabase
 import com.example.githubClient.data.model.GithubBaseUser
+import com.example.githubClient.data.model.GithubUserWithLocalData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -15,7 +16,7 @@ import kotlin.math.pow
 @OptIn(ExperimentalPagingApi::class) class GithubUsersRemoteMediator(
     private val githubApiService: GithubApi,
     private val githubDatabase: GithubDatabase
-) : RemoteMediator<Int, GithubBaseUser>() {
+) : RemoteMediator<Int, GithubUserWithLocalData>() {
 
     // using mutex to ensure always one network call is running
     private val networkChannel = Mutex()
@@ -27,7 +28,7 @@ import kotlin.math.pow
 
     // current back off power by backoffFactor creates the next back off period
     private val backoffFactor = 2.0
-    override suspend fun load(loadType: LoadType, state: PagingState<Int, GithubBaseUser>): MediatorResult {
+    override suspend fun load(loadType: LoadType, state: PagingState<Int, GithubUserWithLocalData>): MediatorResult {
         try {
             // Determine the start key based on the LoadType
             val since = when (loadType) {
@@ -36,7 +37,7 @@ import kotlin.math.pow
                 LoadType.APPEND  -> {
                     val lastItem = state.lastItemOrNull()
                         ?: return MediatorResult.Success(endOfPaginationReached = true)
-                    lastItem.id
+                    lastItem.githubUser.id
                 }
             }
             Timber.d("loadType: $loadType, since: $since")

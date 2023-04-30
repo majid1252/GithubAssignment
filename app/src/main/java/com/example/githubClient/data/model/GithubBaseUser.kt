@@ -1,5 +1,6 @@
 package com.example.githubClient.data.model
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
@@ -23,4 +24,5 @@ data class GithubBaseUser(
     override val events_url: String,
     override val received_events_url: String,
     override val type: String,
-    override val site_admin: Boolean) : IGithubBaseUser
+    override val site_admin: Boolean
+    ) : IGithubBaseUser

@@ -1,18 +1,21 @@
 package com.example.githubClient.data.db
 
+import com.example.githubClient.data.model.GithubUserLocalData
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.githubClient.data.model.GithubBaseUser
 
 @Database(
-    entities = [GithubBaseUser::class],
+    entities = [GithubBaseUser::class, GithubUserLocalData::class],
     version = 1
 )
-abstract class GithubDatabase: RoomDatabase() {
+abstract class GithubDatabase : RoomDatabase() {
 
-    abstract val githubUserDao : GithubUserDao
+    abstract val githubUserDao: GithubUserDao
 
     companion object {
 
@@ -29,7 +32,7 @@ abstract class GithubDatabase: RoomDatabase() {
             Room.databaseBuilder(
                 context.applicationContext,
                 GithubDatabase::class.java, "github.db"
-            )
-                .build()
+            ).build()
     }
 }
+

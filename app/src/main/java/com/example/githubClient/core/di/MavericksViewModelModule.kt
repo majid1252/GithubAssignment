@@ -1,7 +1,7 @@
 package com.example.githubClient.core.di
 
 import com.example.githubClient.core.architecture.viewModel.MavericksAssistedViewModelFactory
-import com.example.githubClient.viewModel.GithubUsersGViewModel
+import com.example.githubClient.viewModel.GithubUsersViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,7 +13,7 @@ interface MavericksViewModelModule {
 
     @Binds
     @IntoMap
-    @MavericksViewModelKey(GithubUsersGViewModel::class)
-    fun copyTaskViewModelFactory(factory: GithubUsersGViewModel.Factory): MavericksAssistedViewModelFactory<*, *>
+    @MavericksViewModelKey(GithubUsersViewModel::class)
+    fun copyTaskViewModelFactory(factory: GithubUsersViewModel.Factory): MavericksAssistedViewModelFactory<*, *>
 
 }

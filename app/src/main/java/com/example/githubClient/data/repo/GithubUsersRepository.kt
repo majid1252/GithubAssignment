@@ -8,6 +8,7 @@ import androidx.paging.PagingData
 import com.example.githubClient.data.api.GithubApi
 import com.example.githubClient.data.db.GithubDatabase
 import com.example.githubClient.data.model.GithubBaseUser
+import com.example.githubClient.data.model.GithubUserWithLocalData
 import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalPagingApi::class) class GithubUsersRepository(
@@ -34,7 +35,7 @@ import kotlinx.coroutines.flow.Flow
         return initialPageSize!!
     }
 
-    fun getUsers(): Flow<PagingData<GithubBaseUser>> {
+    fun getUsers(): Flow<PagingData<GithubUserWithLocalData>> {
         val pageSize = initialPageSize ?: 30
         return Pager(
             config = PagingConfig(
@@ -42,7 +43,7 @@ import kotlinx.coroutines.flow.Flow
                 enablePlaceholders = true
             ),
             remoteMediator = githubRemoteMediator,
-            pagingSourceFactory = { githubDatabase.githubUserDao.getUsers() }
+            pagingSourceFactory = { githubDatabase.githubUserDao.getUsersWithLocalData() }
         ).flow
     }
 }
