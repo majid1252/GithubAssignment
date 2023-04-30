@@ -71,7 +71,7 @@ fun ConnectingDot(visible: Boolean) {
             .width(4.dp)
             .height(4.dp)
             .padding(top = 4.dp),
-        color = colorResource(id = R.color.md_theme_dark_onSecondaryContainer).copy(alpha),
+        color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha),
     )
 }
 
@@ -81,7 +81,7 @@ fun ConnectingDotsWithText() {
         modifier = Modifier
             .wrapContentHeight()
             .padding(16.dp)
-            .background(colorResource(id = R.color.md_theme_dark_secondaryContainer), shape = RoundedCornerShape(46.dp)),
+            .background(MaterialTheme.colorScheme.secondaryContainer, shape = RoundedCornerShape(46.dp)),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -93,7 +93,7 @@ fun ConnectingDotsWithText() {
                 modifier = Modifier.padding(end = 4.dp),
                 text = "Connecting",
                 fontWeight = FontWeight.Bold,
-                color = colorResource(id = R.color.md_theme_dark_onSecondaryContainer)
+                color = MaterialTheme.colorScheme.onSecondaryContainer
             )
             ConnectingDotsAnimation()
         }

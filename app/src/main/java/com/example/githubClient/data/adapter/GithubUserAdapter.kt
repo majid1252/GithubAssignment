@@ -12,13 +12,18 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.load.Transformation
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.example.githubClient.R
 import com.example.githubClient.core.glide.GlideApp
 import com.example.githubClient.core.glide.InvertColorTransformation
 import com.example.githubClient.data.model.GithubBaseUser
 import com.example.githubClient.data.model.GithubUserWithLocalData
+import com.example.githubClient.ui.utils.RoundedCornersTransformation
 
 class GithubUserAdapter : PagingDataAdapter<GithubUserWithLocalData, GithubUserAdapter.ViewHolder>(USER_COMPARATOR) {
 
@@ -31,18 +36,22 @@ class GithubUserAdapter : PagingDataAdapter<GithubUserWithLocalData, GithubUserA
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = getItem(position)
         if (user != null) {
+            // bind data to view
+            // set name
             holder.name.text = user.githubUser.login
+            // add necessary transformations to image here
+            val transformations = mutableListOf<BitmapTransformation>(RoundedCornersTransformation(12f))
+            if ((holder.absoluteAdapterPosition + 1) % 4 == 0)
+                transformations.add(InvertColorTransformation())
+            // load image with Glide
             GlideApp
                 .with(holder.itemView.context)
                 .load(user.githubUser.avatar_url)
-                .transition(DrawableTransitionOptions.withCrossFade())
+                .transform(
+                    MultiTransformation(transformations)
+                ).transition(DrawableTransitionOptions.withCrossFade())
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
-                .let {
-                    if ((holder.absoluteAdapterPosition + 1) % 4 == 0)
-                        it.transform(InvertColorTransformation())
-                    else
-                        it
-                }.into(holder.avatar)
+                .into(holder.avatar)
         }
     }
 
