@@ -16,6 +16,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.githubClient.R
 import com.example.githubClient.core.glide.GlideApp
+import com.example.githubClient.core.glide.InvertColorTransformation
 import com.example.githubClient.data.model.GithubBaseUser
 import com.example.githubClient.data.model.GithubUserWithLocalData
 
@@ -36,7 +37,12 @@ class GithubUserAdapter : PagingDataAdapter<GithubUserWithLocalData, GithubUserA
                 .load(user.githubUser.avatar_url)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
-                .into(holder.avatar)
+                .let {
+                    if ((holder.absoluteAdapterPosition + 1) % 4 == 0)
+                        it.transform(InvertColorTransformation())
+                    else
+                        it
+                }.into(holder.avatar)
         }
     }
 
