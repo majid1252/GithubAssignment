@@ -30,7 +30,7 @@ class GlideModuleImpl: AppGlideModule() {
     override fun applyOptions(context: Context, builder: GlideBuilder) {
         // Customize Glide settings here
         val diskCacheSizeBytes = Constants.GLIDE_CACHE_SIZE
-        val diskCachePath = Constants.GLIDE_CACHE_DIR_NAME
+        val diskCachePath = context.cacheDir.path + Constants.GLIDE_CACHE_DIR_NAME
 
         builder.setDiskCache(DiskLruCacheFactory(diskCachePath, diskCacheSizeBytes.toLong()))
     }

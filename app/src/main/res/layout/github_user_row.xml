@@ -5,30 +5,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="4dp"
+    android:layout_marginVertical="8dp"
     android:layout_marginHorizontal="16dp"
     android:background="@drawable/round_item_back">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/user_image"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:scaleType="centerCrop"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
         android:background="@drawable/round_item_back"
         android:clipToOutline="true"
-        android:layout_margin="16dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:src="@color/md_theme_light_primaryContainer" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:textColor="?attr/colorOnPrimaryContainer"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:textColor="?attr/colorOnSecondaryContainer"
         app:layout_constraintEnd_toStartOf="@+id/data_availability_indicator"
         app:layout_constraintStart_toEndOf="@+id/user_image"
         app:layout_constraintTop_toTopOf="@+id/user_image"

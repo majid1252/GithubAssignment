@@ -1,6 +1,5 @@
 package com.example.githubClient.ui.components
 
-import android.R
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateFloatAsState
@@ -32,6 +31,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.githubClient.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -71,7 +71,7 @@ fun ConnectingDot(visible: Boolean) {
             .width(4.dp)
             .height(4.dp)
             .padding(top = 4.dp),
-        color = MaterialTheme.colorScheme.primary.copy(alpha = alpha)
+        color = colorResource(id = R.color.md_theme_dark_onSecondaryContainer).copy(alpha),
     )
 }
 
@@ -81,7 +81,7 @@ fun ConnectingDotsWithText() {
         modifier = Modifier
             .wrapContentHeight()
             .padding(16.dp)
-            .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(46.dp)),
+            .background(colorResource(id = R.color.md_theme_dark_secondaryContainer), shape = RoundedCornerShape(46.dp)),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -93,7 +93,7 @@ fun ConnectingDotsWithText() {
                 modifier = Modifier.padding(end = 4.dp),
                 text = "Connecting",
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
+                color = colorResource(id = R.color.md_theme_dark_onSecondaryContainer)
             )
             ConnectingDotsAnimation()
         }
