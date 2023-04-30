@@ -9,6 +9,7 @@ import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import timber.log.Timber
 import java.util.concurrent.CountDownLatch
 
 /**
@@ -28,12 +29,14 @@ object GithubEndpoint {
         .addInterceptor { chain ->
             // Wait for the network to become available before continuing the call
             networkConnectedLatch.await()
-
+            Timber.tag("GithubEndpoint").d("Making network call for ${chain.request().url}")
             val originalRequest = chain.request()
             val requestWithToken = originalRequest.newBuilder()
-                .header("Authorization", "token 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")
+                .header("Authorization", "token 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")
                 .build()
-            chain.proceed(requestWithToken)
+            val response = chain.proceed(requestWithToken)
+            Timber.tag("GithubEndpoint").d("Received ${response.code} $response for ${chain.request().url}")
+            response
         }
         .dispatcher(dispatcher)
         .build()
