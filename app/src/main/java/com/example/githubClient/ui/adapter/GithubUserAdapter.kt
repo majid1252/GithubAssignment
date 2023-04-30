@@ -3,7 +3,10 @@ package com.example.githubClient.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.paging.LoadState
+import androidx.paging.LoadStateAdapter
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +14,7 @@ import com.example.githubClient.R
 import com.example.githubClient.data.model.GithubBaseUser
 
 class GithubUserAdapter : PagingDataAdapter<GithubBaseUser, GithubUserAdapter.ViewHolder>(USER_COMPARATOR) {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // Inflate your custom view and return the ViewHolder
@@ -24,11 +28,16 @@ class GithubUserAdapter : PagingDataAdapter<GithubBaseUser, GithubUserAdapter.Vi
         }
     }
 
+
+
     class ViewHolder(view:View) : RecyclerView.ViewHolder(view) {
         internal val name:AppCompatTextView = view.findViewById(R.id.name)
     }
 
+
     companion object {
+
+
         private val USER_COMPARATOR = object : DiffUtil.ItemCallback<GithubBaseUser>() {
             override fun areItemsTheSame(oldItem: GithubBaseUser, newItem: GithubBaseUser): Boolean =
                 (oldItem.id == newItem.id) && (oldItem.login == newItem.login)

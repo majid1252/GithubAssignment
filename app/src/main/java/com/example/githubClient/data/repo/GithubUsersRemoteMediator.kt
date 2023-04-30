@@ -9,9 +9,10 @@ import com.example.githubClient.data.model.GithubBaseUser
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import timber.log.Timber
 import kotlin.math.pow
 
-@OptIn(ExperimentalPagingApi::class) class GithubRemoteMediator(
+@OptIn(ExperimentalPagingApi::class) class GithubUsersRemoteMediator(
     private val githubApiService: GithubApi,
     private val githubDatabase: GithubDatabase
 ) : RemoteMediator<Int, GithubBaseUser>() {
@@ -38,6 +39,7 @@ import kotlin.math.pow
                     lastItem.id
                 }
             }
+            Timber.d("loadType: $loadType, since: $since")
             var currentRetry = 0
             while (currentRetry < maxRetries) {
                 networkChannel.withLock {

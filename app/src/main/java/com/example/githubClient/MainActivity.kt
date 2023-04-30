@@ -11,6 +11,7 @@ import com.airbnb.mvrx.viewModel
 import com.example.githubClient.core.platform.BaseActivity
 import com.example.githubClient.ui.adapter.GithubUserAdapter
 import com.example.githubClient.databinding.ActivityMainBinding
+import com.example.githubClient.ui.adapter.LoadStateFooterAdapter
 import com.example.githubClient.viewModel.GithubUsersGViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -31,7 +32,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),MavericksView {
 
         val recyclerView = views.rvUserScheduler
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = githubUserAdapter
+        recyclerView.adapter = githubUserAdapter.withLoadStateFooter(LoadStateFooterAdapter())
 
         lifecycleScope.launch {
             githubViewModel

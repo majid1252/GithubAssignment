@@ -1,6 +1,6 @@
 package com.example.githubClient.data.repo
 
-import GithubRemoteMediator
+import GithubUsersRemoteMediator
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
     private val githubDatabase: GithubDatabase
 ) {
 
-    private val githubRemoteMediator = GithubRemoteMediator(githubApiService , githubDatabase)
+    private val githubRemoteMediator = GithubUsersRemoteMediator(githubApiService, githubDatabase)
 
     // Variable to store the determined page size
     private var initialPageSize: Int? = null
@@ -39,7 +39,7 @@ import kotlinx.coroutines.flow.Flow
         return Pager(
             config = PagingConfig(
                 pageSize = pageSize,
-                enablePlaceholders = false
+                enablePlaceholders = true
             ),
             remoteMediator = githubRemoteMediator,
             pagingSourceFactory = { githubDatabase.githubUserDao.getUsers() }

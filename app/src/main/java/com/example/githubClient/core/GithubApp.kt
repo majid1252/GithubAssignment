@@ -18,8 +18,7 @@ class GithubApp : Application() {
         instance = this
         Mavericks.initialize(this)
         //Timber
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
+        Timber.plant(Timber.DebugTree())
+
     }
 }
