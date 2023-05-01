@@ -43,27 +43,25 @@ import kotlin.math.pow
             Timber.d("loadType: $loadType, since: $since")
             var currentRetry = 0
             while (currentRetry < maxRetries) {
-                networkChannel.withLock {
-                    val response = githubApiService.getUsers(since ?: 0)
-                    if (response.isSuccessful) {
-                        val users = response.body() ?: emptyList()
-                        // Save the data in the database
-                        githubDatabase.withTransaction {
-                            if (loadType == LoadType.REFRESH) {
-                                githubDatabase.githubUserDao.clearAll()
-                            }
-                            githubDatabase.githubUserDao.insertAll(users)
+                val response = githubApiService.getUsers(since ?: 0)
+                if (response.isSuccessful) {
+                    val users = response.body() ?: emptyList()
+                    // Save the data in the database
+                    githubDatabase.withTransaction {
+                        if (loadType == LoadType.REFRESH) {
+                            githubDatabase.githubUserDao.clearAll()
                         }
-
-                        return MediatorResult.Success(endOfPaginationReached = users.isEmpty())
-                    } else {
-                        if (currentRetry >= maxRetries - 1) {
-                            throw Exception("Failed to load data after $maxRetries retries")
-                        }
-                        val backoffMillis = initialBackoffMillis * (backoffFactor.pow(currentRetry))
-                        delay(backoffMillis.toLong())
-                        currentRetry++
+                        githubDatabase.githubUserDao.insertAll(users)
                     }
+
+                    return MediatorResult.Success(endOfPaginationReached = users.isEmpty())
+                } else {
+                    if (currentRetry >= maxRetries - 1) {
+                        throw Exception("Failed to load data after $maxRetries retries")
+                    }
+                    val backoffMillis = initialBackoffMillis * (backoffFactor.pow(currentRetry))
+                    delay(backoffMillis.toLong())
+                    currentRetry++
                 }
             }
         } catch (e: Throwable) {

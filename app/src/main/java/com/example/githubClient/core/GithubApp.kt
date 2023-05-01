@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.airbnb.mvrx.BuildConfig
 import com.airbnb.mvrx.Mavericks
+import com.example.githubClient.data.api.GithubEndpoint
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -20,6 +21,8 @@ class GithubApp : Application() {
         Mavericks.initialize(this)
         //Timber
         Timber.plant(Timber.DebugTree())
+        //Setup network manager
+        GithubEndpoint.setupNetworkListener(this)
 
         // Set the default Night Mode for the entire app
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
