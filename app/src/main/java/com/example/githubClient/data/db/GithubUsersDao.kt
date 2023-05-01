@@ -3,6 +3,7 @@ package com.example.githubClient.data.db
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -19,9 +20,16 @@ interface GithubUserDao {
     @Query("SELECT * FROM github_users")
     fun getUsers(): PagingSource<Int, GithubBaseUser>
 
+    @Query("SELECT * FROM github_users")
+    fun getUsersRaw(): List<GithubBaseUser>
+
     @Transaction
     @Query("SELECT * FROM github_users")
     fun getUsersWithLocalData(): PagingSource<Int, GithubUserWithLocalData>
+
+    @Transaction
+    @Query("SELECT * FROM github_users")
+    fun getUsersWithLocalDataRaw():List<GithubUserWithLocalData>
 
     @Transaction
     @Query("SELECT * FROM github_users WHERE login LIKE :query")
@@ -33,6 +41,10 @@ interface GithubUserDao {
     // Methods for handling UserLocalData like notes
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertLocalUserData(localUserData: GithubUserLocalData)
+
+    // Delete user local data
+    @Delete
+    suspend fun deleteLocalUserData(localUserData: GithubUserLocalData)
 
     @Query("SELECT * FROM local_user_data WHERE userId = :userId")
     suspend fun getLocalUserData(userId: Int): GithubUserLocalData?
