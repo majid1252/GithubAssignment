@@ -40,7 +40,7 @@ class GithubUserAdapter : PagingDataAdapter<GithubUserWithLocalData, GithubUserA
             // set name
             holder.name.text = user.githubUser.login
             // add necessary transformations to image here
-            val transformations = mutableListOf<BitmapTransformation>(RoundedCornersTransformation(12f))
+            val transformations = mutableListOf<BitmapTransformation>(RoundedCornersTransformation(120f))
             if ((holder.absoluteAdapterPosition + 1) % 4 == 0)
                 transformations.add(InvertColorTransformation())
             // load image with Glide

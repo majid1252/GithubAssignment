@@ -9,7 +9,7 @@ object GithubEndpoint {
         .addInterceptor { chain ->
             val originalRequest = chain.request()
             val requestWithToken = originalRequest.newBuilder()
-                .header("Authorization", "token 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")
+                .header("Authorization", "token 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")
                 .build()
             chain.proceed(requestWithToken)
         }

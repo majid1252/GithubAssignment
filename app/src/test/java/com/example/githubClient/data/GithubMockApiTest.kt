@@ -1,15 +1,19 @@
 import com.example.githubClient.data.api.GithubApi
+import com.example.githubClient.data.model.GithubBaseUser
 import com.example.githubClient.data.model.IGithubBaseUser
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class GithubMockApiTest {
+@OptIn(ExperimentalCoroutinesApi::class) class GithubMockApiTest {
     private lateinit var api: GithubApi
     private val server = MockWebServer()
 
@@ -57,13 +61,16 @@ class GithubMockApiTest {
         """.trimIndent()))
 
         // Call API
-        val response = api.getUsers(0).execute()
+        var response : Response<List<GithubBaseUser>>? = null
+        runTest {
+            response = api.getUsers(0)
+        }
 
         // Check if the response is successful
-        assertTrue(response.isSuccessful)
+        assertTrue(response?.isSuccessful == true)
 
         // Print API response
-        val users: List<IGithubBaseUser>? = response.body()
+        val users: List<IGithubBaseUser>? = response?.body()
         users?.forEach { user ->
             println("User: $user")
         }
