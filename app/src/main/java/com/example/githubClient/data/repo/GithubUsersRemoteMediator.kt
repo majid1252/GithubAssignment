@@ -17,17 +17,6 @@ import kotlin.math.pow
     private val githubApiService: GithubApi,
     private val githubDatabase: GithubDatabase
 ) : RemoteMediator<Int, GithubUserWithLocalData>() {
-
-    // using mutex to ensure always one network call is running
-    private val networkChannel = Mutex()
-
-    // exponential back-off initializers
-    // max retry on any type of network problem
-    private val maxRetries = 3
-    private val initialBackoffMillis = 1000L
-
-    // current back off power by backoffFactor creates the next back off period
-    private val backoffFactor = 2.0
     override suspend fun load(loadType: LoadType, state: PagingState<Int, GithubUserWithLocalData>): MediatorResult {
         try {
             // Determine the start key based on the LoadType
@@ -41,8 +30,7 @@ import kotlin.math.pow
                 }
             }
             Timber.d("loadType: $loadType, since: $since")
-            var currentRetry = 0
-            while (currentRetry < maxRetries) {
+
                 val response = githubApiService.getUsers(since ?: 0)
                 if (response.isSuccessful) {
                     val users = response.body() ?: emptyList()
@@ -55,14 +43,7 @@ import kotlin.math.pow
                     }
 
                     return MediatorResult.Success(endOfPaginationReached = users.isEmpty())
-                } else {
-                    if (currentRetry >= maxRetries - 1) {
-                        throw Exception("Failed to load data after $maxRetries retries")
-                    }
-                    val backoffMillis = initialBackoffMillis * (backoffFactor.pow(currentRetry))
-                    delay(backoffMillis.toLong())
-                    currentRetry++
-                }
+
             }
         } catch (e: Throwable) {
             return MediatorResult.Error(e)
