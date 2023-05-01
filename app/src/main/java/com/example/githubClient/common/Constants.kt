@@ -4,7 +4,7 @@ package com.example.githubClient.common
  * Constants used throughout the app.
  */
 object Constants {
-    const val GITHUB_API_KEY: String = "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"
+    const val GITHUB_API_KEY: String = "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"
 
     // Endpoints
     const val GITHUB_BASE_URL = "https://api.github.com/"

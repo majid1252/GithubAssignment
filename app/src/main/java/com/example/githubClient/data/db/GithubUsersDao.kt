@@ -1,5 +1,6 @@
 package com.example.githubClient.data.db
 
+import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
@@ -21,6 +22,10 @@ interface GithubUserDao {
     @Transaction
     @Query("SELECT * FROM github_users")
     fun getUsersWithLocalData(): PagingSource<Int, GithubUserWithLocalData>
+
+    @Transaction
+    @Query("SELECT * FROM github_users WHERE login LIKE :query")
+    suspend fun queryUsers(query:String): List<GithubUserWithLocalData>
 
     @Query("DELETE FROM github_users")
     suspend fun clearAll()

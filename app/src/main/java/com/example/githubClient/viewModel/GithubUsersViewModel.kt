@@ -1,6 +1,8 @@
 package com.example.githubClient.viewModel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.githubClient.core.GithubApp
@@ -20,13 +22,14 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 class GithubUsersViewModel @AssistedInject constructor(
     @Assisted private val initialState: GithubUsersViewState,
 ) : GViewModel<GithubUsersViewState, GithubUsersViewAction, GithubUsersViewEvent>(initialState) {
     private val githubUsersRepository = GithubUsersRepository(GithubEndpoint.githubApi , GithubDatabase.getInstance(GithubApp.getContext()))
     val users: Flow<PagingData<GithubUserWithLocalData>> = githubUsersRepository.getUsers().cachedIn(viewModelScope)
-
+    val queriedUsers: MutableLiveData<List<GithubUserWithLocalData>> = MediatorLiveData()
     init {
 
     }
@@ -35,6 +38,12 @@ class GithubUsersViewModel @AssistedInject constructor(
         when (action) {
             is GithubUsersViewAction.NetworkStatusChanged -> {
                 setState { copy(networkStatus = action.networkStatus) }
+            }
+            is GithubUsersViewAction.QueryUsers           -> {
+                setState { copy(searchQuery = action.query) }
+                viewModelScope.launch {
+                    queriedUsers.value = githubUsersRepository.searchForUsers(action.query)
+                }
             }
         }
     }

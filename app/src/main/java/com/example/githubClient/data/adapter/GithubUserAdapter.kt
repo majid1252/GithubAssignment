@@ -26,8 +26,6 @@ import com.example.githubClient.data.model.GithubUserWithLocalData
 import com.example.githubClient.ui.utils.RoundedCornersTransformation
 
 class GithubUserAdapter : PagingDataAdapter<GithubUserWithLocalData, GithubUserAdapter.ViewHolder>(USER_COMPARATOR) {
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // Inflate your custom view and return the ViewHolder
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.github_user_row, parent, false))
@@ -64,8 +62,6 @@ class GithubUserAdapter : PagingDataAdapter<GithubUserWithLocalData, GithubUserA
 
 
     companion object {
-
-
         private val USER_COMPARATOR = object : DiffUtil.ItemCallback<GithubUserWithLocalData>() {
             override fun areItemsTheSame(oldItem: GithubUserWithLocalData, newItem: GithubUserWithLocalData): Boolean =
                 (oldItem.githubUser.id == newItem.githubUser.id) && (oldItem.githubUser.login == newItem.githubUser.login)

@@ -2,6 +2,7 @@ package com.example.githubClient
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.MavericksView
@@ -10,9 +11,9 @@ import com.airbnb.mvrx.viewModel
 import com.example.githubClient.core.network.NetworkStatus
 import com.example.githubClient.core.platform.BaseActivity
 import com.example.githubClient.data.adapter.GithubUserAdapter
+import com.example.githubClient.data.adapter.GithubUsersSearchAdapter
 import com.example.githubClient.databinding.ActivityMainBinding
 import com.example.githubClient.data.adapter.LoadStateFooterAdapter
-import com.example.githubClient.ui.components.ConnectingDotsAnimation
 import com.example.githubClient.ui.components.ConnectingDotsWithText
 import com.example.githubClient.ui.utils.slideIn
 import com.example.githubClient.ui.utils.slideOut
@@ -26,24 +27,34 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(),MavericksView {
 
-    private val githubViewModel: GithubUsersViewModel by viewModel()
+    private val githubUsersViewModel: GithubUsersViewModel by viewModel()
     private lateinit var githubUserAdapter: GithubUserAdapter
+    private lateinit var githubUserSearchAdapter: GithubUsersSearchAdapter
 
     override fun getBinding() = ActivityMainBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         githubUserAdapter = GithubUserAdapter()
+        githubUserSearchAdapter = GithubUsersSearchAdapter()
 
         val recyclerView = views.rvUserScheduler
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = githubUserAdapter.withLoadStateFooter(LoadStateFooterAdapter())
 
+        val rvSearchResult = views.rvUserSearchResult
+        rvSearchResult.layoutManager = LinearLayoutManager(this)
+        rvSearchResult.adapter = githubUserSearchAdapter
+
         views.networkState.setContent {
             ConnectingDotsWithText()
         }
 
-        githubViewModel.onEach(GithubUsersViewState::networkStatus) { state ->
+        views.usersSearchView.editText.addTextChangedListener {
+            githubUsersViewModel.handle(GithubUsersViewAction.QueryUsers("${it.toString()}%"))
+        }
+
+        githubUsersViewModel.onEach(GithubUsersViewState::networkStatus) { state ->
             when (state) {
                 NetworkStatus.CONNECTED         -> {
                     views.networkState.slideOut()
@@ -54,8 +65,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),MavericksView {
             }
         }
 
+        githubUsersViewModel.queriedUsers.observe(this) {
+            githubUserSearchAdapter.differ.submitList(it)
+        }
+
         lifecycleScope.launch {
-            githubViewModel
+            githubUsersViewModel
                 .users
                 .distinctUntilChanged()
                 .collectLatest(RedeliverOnStart) { pagingData ->
@@ -64,7 +79,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),MavericksView {
         }
 
         networkStatus.observe(this) {
-            githubViewModel.handle(GithubUsersViewAction.NetworkStatusChanged(it))
+            githubUsersViewModel.handle(GithubUsersViewAction.NetworkStatusChanged(it))
         }
     }
 }

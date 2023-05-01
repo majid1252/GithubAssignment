@@ -46,4 +46,6 @@ import kotlinx.coroutines.flow.Flow
             pagingSourceFactory = { githubDatabase.githubUserDao.getUsersWithLocalData() }
         ).flow
     }
+
+    suspend fun searchForUsers(query: String) = githubDatabase.githubUserDao.queryUsers(query)
 }
