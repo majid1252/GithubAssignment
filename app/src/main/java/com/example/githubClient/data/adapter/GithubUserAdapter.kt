@@ -26,6 +26,9 @@ import com.example.githubClient.data.model.GithubUserWithLocalData
 import com.example.githubClient.ui.utils.RoundedCornersTransformation
 
 class GithubUserAdapter : PagingDataAdapter<GithubUserWithLocalData, GithubUserAdapter.ViewHolder>(USER_COMPARATOR) {
+
+    private var userClickListener: UserItemClickListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // Inflate your custom view and return the ViewHolder
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.github_user_row, parent, false))
@@ -50,10 +53,16 @@ class GithubUserAdapter : PagingDataAdapter<GithubUserWithLocalData, GithubUserA
                 ).transition(DrawableTransitionOptions.withCrossFade())
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .into(holder.avatar)
+
+            holder.itemView.setOnClickListener {
+                userClickListener?.onUserClicked(user.githubUser)
+            }
         }
     }
 
-
+    fun setUserClickListener(userClickListener: UserItemClickListener) {
+        this.userClickListener = userClickListener
+    }
 
     class ViewHolder(view:View) : RecyclerView.ViewHolder(view) {
         internal val name:AppCompatTextView = view.findViewById(R.id.name)

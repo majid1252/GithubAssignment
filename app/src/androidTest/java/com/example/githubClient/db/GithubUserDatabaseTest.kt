@@ -108,6 +108,25 @@ class GithubUserDatabaseTest {
         assertThat(correspondingUser?.localData?.note, equalTo(null))
     }
 
+    @Test
+    fun userSearchTest() = runBlockingTest {
+        // add 4 users to the database
+        val users = listOf(
+            sampleUser().copy(id = 1, login = "user1"),
+            sampleUser().copy(id = 2, login = "user2"),
+            sampleUser().copy(id = 3, login = "user3note1"),
+            sampleUser().copy(id = 4, login = "user4"),
+        )
+        userDatabase.githubUserDao.insertAll(users)
+        // add note for two of them
+        userDatabase.githubUserDao.insertLocalUserData(GithubUserLocalData("1", "***note1"))
+        userDatabase.githubUserDao.insertLocalUserData(GithubUserLocalData("2", "note2"))
+        // search for users with "user" in their login
+        val searchResults = userDatabase.githubUserDao.queryUsersByUsernameAndNote("*note1*")
+        // assert that the results contain the two users with notes
+        assertThat(searchResults.size, equalTo(2))
+    }
+
     private fun sampleUser() = GithubBaseUser(
         0,
         "John Doe",

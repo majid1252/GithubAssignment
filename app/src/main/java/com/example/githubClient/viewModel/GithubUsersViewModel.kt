@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 class GithubUsersViewModel @AssistedInject constructor(
     @Assisted private val initialState: GithubUsersViewState,
 ) : GViewModel<GithubUsersViewState, GithubUsersViewAction, GithubUsersViewEvent>(initialState) {
+
     private val githubUsersRepository = GithubUsersRepository(GithubEndpoint.githubApi , GithubDatabase.getInstance(GithubApp.getContext()))
     val users: Flow<PagingData<GithubUserWithLocalData>> = githubUsersRepository.getUsers().cachedIn(viewModelScope)
     val queriedUsers: MutableLiveData<List<GithubUserWithLocalData>> = MediatorLiveData()
@@ -40,9 +41,9 @@ class GithubUsersViewModel @AssistedInject constructor(
                 setState { copy(networkStatus = action.networkStatus) }
             }
             is GithubUsersViewAction.QueryUsers           -> {
-                setState { copy(searchQuery = action.query) }
                 viewModelScope.launch {
                     queriedUsers.value = githubUsersRepository.searchForUsers(action.query)
+                    setState { copy(searchQuery = action.query) }
                 }
             }
         }

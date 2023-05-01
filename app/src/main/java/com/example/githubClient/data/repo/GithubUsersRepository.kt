@@ -7,7 +7,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.githubClient.data.api.GithubApi
 import com.example.githubClient.data.db.GithubDatabase
-import com.example.githubClient.data.model.GithubBaseUser
 import com.example.githubClient.data.model.GithubUserWithLocalData
 import kotlinx.coroutines.flow.Flow
 
@@ -47,5 +46,5 @@ import kotlinx.coroutines.flow.Flow
         ).flow
     }
 
-    suspend fun searchForUsers(query: String) = githubDatabase.githubUserDao.queryUsers(query)
+    suspend fun searchForUsers(query: String) = githubDatabase.githubUserDao.queryUsersByUsernameAndNote(query)
 }

@@ -1,6 +1,5 @@
 package com.example.githubClient.data.db
 
-import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Delete
@@ -32,8 +31,10 @@ interface GithubUserDao {
     fun getUsersWithLocalDataRaw():List<GithubUserWithLocalData>
 
     @Transaction
-    @Query("SELECT * FROM github_users WHERE login LIKE :query")
-    suspend fun queryUsers(query:String): List<GithubUserWithLocalData>
+    @Query("SELECT * FROM github_users LEFT JOIN local_user_data ON github_users.id = local_user_data.userId " +
+               "WHERE github_users.login GLOB :query " +
+               "OR local_user_data.note GLOB :query")
+    suspend fun queryUsersByUsernameAndNote(query:String): List<GithubUserWithLocalData>
 
     @Query("DELETE FROM github_users")
     suspend fun clearAll()
@@ -49,6 +50,6 @@ interface GithubUserDao {
     @Query("SELECT * FROM local_user_data WHERE userId = :userId")
     suspend fun getLocalUserData(userId: Int): GithubUserLocalData?
 
-//    @Query("UPDATE github_users SET githubUserLocalData = :localUserData WHERE id = :userId")
-//    suspend fun updateLocalUserData(userId: Int, localUserData: GithubUserLocalData)
+    @Query("UPDATE local_user_data SET note = :localUserData WHERE userId = :userId")
+    suspend fun updateLocalUserData(userId: Int, localUserData: String)
 }

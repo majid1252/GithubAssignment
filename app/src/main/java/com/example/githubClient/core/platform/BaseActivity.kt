@@ -1,7 +1,11 @@
 package com.example.githubClient.core.platform
 
+import android.os.Build
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
@@ -9,11 +13,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.airbnb.mvrx.MavericksView
+import com.example.githubClient.R
 import com.example.githubClient.core.GithubApp
 import com.example.githubClient.core.architecture.viewModel.ViewEvent
 import com.example.githubClient.core.architecture.viewModel.GViewModel
 import com.example.githubClient.core.network.NetworkStatus
 import com.example.githubClient.core.network.NetworkStatusLiveData
+import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -41,23 +47,22 @@ abstract class BaseActivity<VB : ViewBinding> : ComponentActivity(), MavericksVi
 
     abstract fun getBinding(): VB
 
-
     override fun invalidate() {
         // no-ops by default
         Timber.v("invalidate() method has not been implemented")
     }
 
     protected fun <T : ViewEvent> GViewModel<*, *, T>.observeViewEvents(
-            observer: (T) -> Unit,
+        observer: (T) -> Unit,
     ) {
         val tag = this@BaseActivity::class.simpleName.toString()
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewEvents
-                        .stream(tag)
-                        .collect {
-                            observer(it)
-                        }
+                    .stream(tag)
+                    .collect {
+                        observer(it)
+                    }
             }
         }
     }

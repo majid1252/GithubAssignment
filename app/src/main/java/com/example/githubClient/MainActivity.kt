@@ -2,6 +2,7 @@ package com.example.githubClient
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,8 @@ import com.example.githubClient.data.adapter.GithubUserAdapter
 import com.example.githubClient.data.adapter.GithubUsersSearchAdapter
 import com.example.githubClient.databinding.ActivityMainBinding
 import com.example.githubClient.data.adapter.LoadStateFooterAdapter
+import com.example.githubClient.data.adapter.UserItemClickListener
+import com.example.githubClient.data.model.GithubBaseUser
 import com.example.githubClient.ui.components.ConnectingDotsWithText
 import com.example.githubClient.ui.utils.slideIn
 import com.example.githubClient.ui.utils.slideOut
@@ -35,8 +38,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),MavericksView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         githubUserAdapter = GithubUserAdapter()
         githubUserSearchAdapter = GithubUsersSearchAdapter()
+
+        githubUserAdapter.setUserClickListener(userClickListener)
+        githubUserSearchAdapter.setUserClickListener(userClickListener)
 
         val recyclerView = views.rvUserScheduler
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -51,7 +58,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),MavericksView {
         }
 
         views.usersSearchView.editText.addTextChangedListener {
-            githubUsersViewModel.handle(GithubUsersViewAction.QueryUsers("${it.toString()}%"))
+            githubUsersViewModel.handle(GithubUsersViewAction.QueryUsers("*${it.toString()}*"))
+        }
+
+        onBackPressedDispatcher.addCallback(this , object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // close search view on back pressed
+                if (views.usersSearchView.isShowing) {
+                    views.usersSearchView.hide()
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
+
+        githubUsersViewModel.onEach(GithubUsersViewState::searchQuery) { query ->
+            if(query.isEmpty())
+                rvSearchResult.scrollToPosition(0)
         }
 
         githubUsersViewModel.onEach(GithubUsersViewState::networkStatus) { state ->
@@ -82,4 +106,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),MavericksView {
             githubUsersViewModel.handle(GithubUsersViewAction.NetworkStatusChanged(it))
         }
     }
+
+    private val userClickListener = object : UserItemClickListener {
+        override fun onUserClicked(user: GithubBaseUser) {
+            Toast.makeText(this@MainActivity, user.login, Toast.LENGTH_SHORT).show()
+        }
+    }
+
 }

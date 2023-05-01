@@ -28,6 +28,8 @@ import com.example.githubClient.ui.utils.RoundedCornersTransformation
 
 class GithubUsersSearchAdapter : RecyclerView.Adapter<GithubUsersSearchAdapter.ViewHolder>() {
 
+    private var userClickListener: UserItemClickListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // Inflate your custom view and return the ViewHolder
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.github_user_row, parent, false))
@@ -47,13 +49,22 @@ class GithubUsersSearchAdapter : RecyclerView.Adapter<GithubUsersSearchAdapter.V
             .with(holder.itemView.context)
             .load(user.githubUser.avatar_url)
             .transition(DrawableTransitionOptions.withCrossFade())
+            .transform(RoundedCornersTransformation(120f))
             .diskCacheStrategy(DiskCacheStrategy.DATA)
             .into(holder.avatar)
+        // set click listener
+        holder.itemView.setOnClickListener {
+            userClickListener?.onUserClicked(user.githubUser)
+        }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         internal val name: AppCompatTextView = view.findViewById(R.id.name)
         internal val avatar: AppCompatImageView = view.findViewById(R.id.user_image)
+    }
+
+    fun setUserClickListener(userClickListener: UserItemClickListener) {
+        this.userClickListener = userClickListener
     }
 
     internal class UserSearchDiffUtil : DiffUtil.ItemCallback<GithubUserWithLocalData>() {
