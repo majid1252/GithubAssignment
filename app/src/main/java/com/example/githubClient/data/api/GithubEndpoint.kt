@@ -1,21 +1,34 @@
 package com.example.githubClient.data.api
+
 import android.content.Context
 import androidx.lifecycle.Observer
 import com.example.githubClient.common.Constants
 import com.example.githubClient.core.GithubApp
 import com.example.githubClient.core.network.NetworkStatus
 import com.example.githubClient.core.network.NetworkStatusLiveData
+import kotlinx.coroutines.delay
 import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
+import java.io.IOException
 import java.util.concurrent.CountDownLatch
+import kotlin.math.pow
 
 /**
  * A singleton object that provides a Github API service, allowing only one ongoing network call at a time.
  */
 object GithubEndpoint {
+
+    // exponential back-off initializers
+    // max retry on any type of network problem
+    private const val maxRetries = 3
+    private const val initialBackoffMillis = 1000L
+
+    // current back off power by backoffFactor creates the next back off period
+    private const val backoffFactor = 2.0
 
     // Create a custom Dispatcher with a max request limit of 1
     private val dispatcher = Dispatcher().apply { maxRequests = 1 }
@@ -27,17 +40,32 @@ object GithubEndpoint {
     // and configure it to use the custom Dispatcher with a max request limit of 1
     private val client = OkHttpClient.Builder()
         .addInterceptor { chain ->
-            // Wait for the network to become available before continuing the call
-            networkConnectedLatch.await()
-            Timber.tag("GithubEndpoint").d("Making network call for ${chain.request().url}")
-            val originalRequest = chain.request()
-            val requestWithToken = originalRequest.newBuilder()
-                .header("Authorization", "token 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")
-                .build()
-            val response = chain.proceed(requestWithToken)
-            Timber.tag("GithubEndpoint").d("Received ${response.code} $response for ${chain.request().url}")
-            response
+            var attempt = 0
+            var response: Response? = null
+            val exception: IOException? = null
+            while (attempt < maxRetries && (response == null || !response.isSuccessful)) {
+                // Wait for the network to become available before continuing the call
+                networkConnectedLatch.await()
+                try {
+                    val originalRequest = chain.request()
+                    val requestWithToken = originalRequest.newBuilder()
+                        .header("Authorization", "token ${Constants.GITHUB_API_KEY}")
+                        .build()
+                    response = chain.proceed(requestWithToken)
+                }catch (e: IOException){
+                    exception?.initCause(e)
+                }
+                if (response == null || !response.isSuccessful) {
+                    response?.close()
+                    attempt++
+                    val backoffTime = initialBackoffMillis * backoffFactor.pow(attempt - 1).toLong()
+                    Thread.sleep(backoffTime)
+                }
+            }
+            response ?: throw exception
+                ?: IOException("ExponentialBackoffInterceptor: Max attempts reached without success")
         }
+        .retryOnConnectionFailure(true)
         .dispatcher(dispatcher)
         .build()
 
