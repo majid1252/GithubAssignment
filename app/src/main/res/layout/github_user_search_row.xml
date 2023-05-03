@@ -26,7 +26,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        style="@style/TextAppearance.MaterialComponents.Headline6"
+        style="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="?attr/colorOnSecondaryContainer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/user_image"

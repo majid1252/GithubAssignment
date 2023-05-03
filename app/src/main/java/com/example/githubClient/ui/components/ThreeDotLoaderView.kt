@@ -32,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.githubClient.R
+import com.example.githubClient.ui.theme.AppTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -71,31 +72,33 @@ fun ConnectingDot(visible: Boolean) {
             .width(4.dp)
             .height(4.dp)
             .padding(top = 4.dp),
-        color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha),
+        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha),
     )
 }
 
 @Composable
 fun ConnectingDotsWithText() {
-    Column(
-        modifier = Modifier
-            .wrapContentHeight()
-            .padding(16.dp)
-            .background(MaterialTheme.colorScheme.secondaryContainer, shape = RoundedCornerShape(46.dp)),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp)
+    AppTheme {
+        Column(
+            modifier = Modifier
+                .wrapContentHeight()
+                .padding(16.dp)
+                .background(MaterialTheme.colorScheme.primaryContainer, shape = RoundedCornerShape(46.dp)),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                modifier = Modifier.padding(end = 4.dp),
-                text = "Connecting",
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
-            )
-            ConnectingDotsAnimation()
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp)
+            ) {
+                Text(
+                    modifier = Modifier.padding(end = 4.dp),
+                    text = "Connecting",
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                ConnectingDotsAnimation()
+            }
         }
     }
 }
