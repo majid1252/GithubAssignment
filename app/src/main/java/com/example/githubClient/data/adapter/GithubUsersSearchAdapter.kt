@@ -32,7 +32,7 @@ class GithubUsersSearchAdapter : RecyclerView.Adapter<GithubUsersSearchAdapter.V
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // Inflate your custom view and return the ViewHolder
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.github_user_row, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.github_user_search_row, parent, false))
     }
 
     override fun getItemCount() = differ.currentList.size
