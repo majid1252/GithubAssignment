@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="8dp"
+    android:layout_marginVertical="4dp"
     android:layout_marginHorizontal="16dp"
     android:background="@drawable/round_item_back">
 
@@ -16,6 +16,7 @@
         android:layout_margin="12dp"
         android:background="@drawable/round_item_back"
         android:scaleType="centerCrop"
+        android:transitionName="user_image_avatar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,7 +26,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        style="@style/TextAppearance.MaterialComponents.Headline6"
+        style="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="?attr/colorOnSecondaryContainer"
         app:layout_constraintEnd_toStartOf="@+id/data_availability_indicator"
         app:layout_constraintStart_toEndOf="@+id/user_image"
@@ -40,6 +41,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/name"
-        tools:src="@drawable/ic_launcher_background" />
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

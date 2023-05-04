@@ -42,7 +42,8 @@ class GithubUsersViewModel @AssistedInject constructor(
             }
             is GithubUsersViewAction.QueryUsers           -> {
                 viewModelScope.launch {
-                    queriedUsers.value = githubUsersRepository.searchForUsers(action.query)
+                    val sqlQuery = "*${action.query}*"
+                    queriedUsers.value = githubUsersRepository.searchForUsers(sqlQuery)
                     setState { copy(searchQuery = action.query) }
                 }
             }

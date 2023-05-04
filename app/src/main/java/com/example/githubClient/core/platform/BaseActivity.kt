@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
@@ -23,7 +24,7 @@ import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-abstract class BaseActivity<VB : ViewBinding> : ComponentActivity(), MavericksView {
+abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), MavericksView {
 
     private lateinit var viewModelFactory: ViewModelProvider.Factory
     val networkStatus: LiveData<NetworkStatus> = NetworkStatusLiveData(GithubApp.getContext())

@@ -9,29 +9,18 @@ import com.example.githubClient.R
 import com.example.githubClient.databinding.LoadStateItemBinding
 
 class ReposLoadStateViewHolder(
-    private val binding: LoadStateItemBinding,
-    retry: () -> Unit
-) : RecyclerView.ViewHolder(binding.root) {
-
-    init {
-        binding.retryButton.setOnClickListener { retry.invoke() }
-    }
+    private val binding: LoadStateItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(loadState: LoadState) {
-        if (loadState is LoadState.Error) {
-            binding.errorMsg.text = loadState.error.localizedMessage
-        }
         binding.progressBar.isVisible = loadState is LoadState.Loading
-        binding.retryButton.isVisible = loadState is LoadState.Error
-        binding.errorMsg.isVisible = loadState is LoadState.Error
     }
 
     companion object {
-        fun create(parent: ViewGroup, retry: () -> Unit): ReposLoadStateViewHolder {
+        fun create(parent: ViewGroup): ReposLoadStateViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.load_state_item, parent, false)
             val binding = LoadStateItemBinding.bind(view)
-            return ReposLoadStateViewHolder(binding, retry)
+            return ReposLoadStateViewHolder(binding)
         }
     }
 }
