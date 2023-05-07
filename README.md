@@ -27,6 +27,19 @@ This GitHub Users Android Application is a comprehensive solution designed for f
 2. Open the project in Android Studio.
 3. Run the app on an emulator or a physical device.
 
+## GitHub API Key and Rate Limiting
+
+To prevent rate-limiting issues and to ensure seamless performance, you need to obtain a GitHub API Key. Follow the steps below:
+
+    Go to GitHub Developer Settings
+    Click on "New OAuth App" or "New GitHub App"
+    Fill in the required fields and create your app
+    Copy the generated API Key
+    Open the project in Android Studio
+    Replace the placeholder text in the appropriate code file with your API Key
+
+With the GitHub API Key in place, you can now enjoy a higher rate limit and a better user experience.
+
 ## Usage
 
 1. Launch the application and view the fetched GitHub users list.
@@ -58,10 +71,6 @@ This project relies on the following dependencies:
 - JUnit, Mockito, and Espresso for a robust test suite
 
 For a comprehensive list of dependencies and their respective versions, please refer to the [build.gradle](app/build.gradle) file.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
 ## Acknowledgments
 
