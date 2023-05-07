@@ -1,8 +1,8 @@
 
 <p float="left">
-  <img src="app/src/main/1.jpg" width="300" />
-  <img src="app/src/main/2.jpg" width="300" />
-  <img src="app/src/main/3.jpg" width="300" />
+  <img src="app/src/main/1.jpg" width="200" />
+  <img src="app/src/main/2.jpg" width="200" />
+  <img src="app/src/main/3.jpg" width="200" />
 </p>
 
 
