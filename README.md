@@ -1,3 +1,11 @@
+
+<p float="left">
+  <img src="app/src/main/1.jpg" width="300" />
+  <img src="app/src/main/2.jpg" width="300" />
+  <img src="app/src/main/3.jpg" width="300" />
+</p>
+
+
 # GitHub Users Android Application
 
 This GitHub Users Android Application is a comprehensive solution designed for fetching and displaying a list of GitHub users and their profile information. Developed by a professional developer, this application employs best practices in Android development and demonstrates expertise in utilizing modern libraries and frameworks.
@@ -36,9 +44,11 @@ To prevent rate-limiting issues and to ensure seamless performance and successfu
     Fill in the required fields and create your app
     Copy the generated API Key
     Open the project in Android Studio
-    Replace the placeholder text in the appropriate code file with your API Key
+    Replace the value of {Constants.GITHUB_API_KEY} and run the project
 
 With the GitHub API Key in place, you can now enjoy a higher rate limit and a better user experience.
+
+> :warning: **Note:** Any github token in the project has been automatically invalidated by Github 
 
 ## Usage
 
