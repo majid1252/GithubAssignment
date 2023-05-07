@@ -27,7 +27,7 @@ This GitHub Users Android Application is a comprehensive solution designed for f
 2. Open the project in Android Studio.
 3. Run the app on an emulator or a physical device.
 
-##⚠️ GitHub API Key and Rate Limiting
+## ⚠️ GitHub API Key and Rate Limiting
 
 To prevent rate-limiting issues and to ensure seamless performance and successful data fetch, you need to obtain a GitHub API Key. Follow the steps below:
 
