@@ -56,7 +56,7 @@ object GithubEndpoint {
                     exception?.initCause(e)
                 }
                 if (response == null || !response.isSuccessful) {
-                    response?.close()
+                    response?.peekBody(Long.MAX_VALUE)?.close()
                     attempt++
                     val backoffTime = initialBackoffMillis * backoffFactor.pow(attempt - 1).toLong()
                     Thread.sleep(backoffTime)
