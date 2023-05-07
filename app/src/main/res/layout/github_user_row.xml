@@ -26,11 +26,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        style="@style/TextAppearance.MaterialComponents.Body1"
+        style="@style/TextAppearance.MaterialComponents.Body2"
         android:textColor="?attr/colorOnSecondaryContainer"
         app:layout_constraintEnd_toStartOf="@+id/data_availability_indicator"
         app:layout_constraintStart_toEndOf="@+id/user_image"
         app:layout_constraintTop_toTopOf="@+id/user_image"
+        app:layout_constraintBottom_toBottomOf="@id/user_image"
         tools:text="User ID: 12345" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -38,6 +39,9 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_note_icon"
+        app:tint="?colorOnSecondaryContainer"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/name"

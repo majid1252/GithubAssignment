@@ -1,5 +1,6 @@
 package com.example.githubClient.data.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,12 +28,14 @@ class GithubUserAdapter : PagingDataAdapter<GithubUserWithLocalData, GithubUserA
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.github_user_row, parent, false))
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = getItem(position)
         if (user != null) {
-            // bind data to view
             // set name
-            holder.name.text = user.githubUser.login
+            holder.name.text = "@${user.githubUser.login}"
+            // set note icon visibility
+            holder.note.visibility = if (user.localData?.note != null) View.VISIBLE else View.GONE
             // add necessary transformations to image here
             val transformations = mutableListOf<BitmapTransformation>(RoundedCornersTransformation(120f))
             if ((holder.absoluteAdapterPosition + 1) % 4 == 0)
@@ -60,6 +63,7 @@ class GithubUserAdapter : PagingDataAdapter<GithubUserWithLocalData, GithubUserA
     class ViewHolder(view:View) : RecyclerView.ViewHolder(view) {
         internal val name:AppCompatTextView = view.findViewById(R.id.name)
         internal val avatar:AppCompatImageView = view.findViewById(R.id.user_image)
+        internal val note:AppCompatImageView = view.findViewById(R.id.data_availability_indicator)
     }
 
 

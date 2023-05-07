@@ -8,9 +8,10 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.githubClient.data.model.GithubBaseUser
+import com.example.githubClient.data.model.GithubDetailedUser
 
 @Database(
-    entities = [GithubBaseUser::class, GithubUserLocalData::class],
+    entities = [GithubBaseUser::class, GithubUserLocalData::class , GithubDetailedUser::class],
     version = 1
 )
 abstract class GithubDatabase : RoomDatabase() {

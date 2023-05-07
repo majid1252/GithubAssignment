@@ -45,11 +45,15 @@ class GithubUsersSearchAdapter : RecyclerView.Adapter<GithubUsersSearchAdapter.V
         holder.itemView.setOnClickListener {
             userClickListener?.onUserClicked(user.githubUser, holder.avatar)
         }
+        // set user note if exists
+        holder.note.visibility = if (user.localData?.note != null) View.VISIBLE else View.GONE
+        holder.note.text = user.localData?.note
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         internal val name: AppCompatTextView = view.findViewById(R.id.name)
         internal val avatar: AppCompatImageView = view.findViewById(R.id.user_image)
+        internal val note: AppCompatTextView = view.findViewById(R.id.note)
     }
 
     fun setUserClickListener(userClickListener: UserItemClickListener) {

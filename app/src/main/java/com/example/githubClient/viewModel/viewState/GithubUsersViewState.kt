@@ -7,6 +7,6 @@ import com.example.githubClient.core.network.NetworkStatus
 data class GithubUsersViewState(
     val networkStatus: NetworkStatus,
     val searchQuery:String = ""
-    ) : MavericksState{
+) : MavericksState{
     constructor() : this(NetworkStatus.CONNECTED)
 }

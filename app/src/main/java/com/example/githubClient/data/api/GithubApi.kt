@@ -13,5 +13,5 @@ interface GithubApi {
     suspend fun getUsers(@Query("since") since: Int): Response<List<GithubBaseUser>>
 
     @GET("users/{username}")
-    fun getUserInfo(@Path("username") username: String?): Call<GithubDetailedUser?>?
+    suspend fun getUserInfo(@Path("username") username: String?): Response<GithubDetailedUser?>?
 }

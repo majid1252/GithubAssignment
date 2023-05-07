@@ -10,8 +10,7 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = GithubBaseUser::class,
             parentColumns = ["id"],
-            childColumns = ["userId"],
-            onDelete = ForeignKey.CASCADE
+            childColumns = ["userId"]
         )
     ]
 )

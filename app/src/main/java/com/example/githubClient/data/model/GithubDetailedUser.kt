@@ -1,6 +1,11 @@
 package com.example.githubClient.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "detailed_user_data")
 data class GithubDetailedUser(
+    @PrimaryKey
     override val login: String,
     override val id: Int,
     override val node_id: String,

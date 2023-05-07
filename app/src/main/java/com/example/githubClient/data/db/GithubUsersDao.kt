@@ -8,6 +8,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.example.githubClient.data.model.GithubBaseUser
+import com.example.githubClient.data.model.GithubDetailedUser
 import com.example.githubClient.data.model.GithubUserLocalData
 import com.example.githubClient.data.model.GithubUserWithLocalData
 
@@ -52,4 +53,12 @@ interface GithubUserDao {
 
     @Query("UPDATE local_user_data SET note = :localUserData WHERE userId = :userId")
     suspend fun updateLocalUserData(userId: Int, localUserData: String)
+
+    // Methods for handling user details
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertUserDetails(userDetails: GithubDetailedUser)
+
+    @Query("SELECT * FROM detailed_user_data WHERE login = :username")
+    suspend fun getUserDetails(username: String): GithubDetailedUser?
+
 }
