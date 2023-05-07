@@ -47,8 +47,7 @@ This project relies on the following dependencies:
 - Flow
 - Paging Library
 - Glide
-- Material Components
-- Navigation Component
+- Material 3 Components
 - Retrofit
 - OkHttp
 - Gson
@@ -59,12 +58,6 @@ This project relies on the following dependencies:
 - JUnit, Mockito, and Espresso for a robust test suite
 
 For a comprehensive list of dependencies and their respective versions, please refer to the [build.gradle](app/build.gradle) file.
-
-## Bonus Features
-
-1. Loading Shimmer for empty views, providing an enhanced user experience.
-2. Exponential backoff for data reloading, optimizing the app's performance.
-3. Dark mode support for a more comfortable viewing experience.
 
 ## License
 
