@@ -37,7 +37,8 @@ This GitHub Users Android Application is a comprehensive solution designed for f
 
 ## ⚠️ GitHub API Key and Rate Limiting
 
-To prevent rate-limiting issues and to ensure seamless performance and successful data fetch, you need to obtain a GitHub API Key. Follow the steps below:
+To prevent rate-limiting issues and to ensure seamless performance and successful data fetch, you need to obtain a GitHub API Key. In case rate-limit hits UI does not inform the user.
+Follow the steps below:
 
     Go to GitHub Developer Settings
     Click on "New OAuth App" or "New GitHub App"
