@@ -3,26 +3,15 @@ package com.example.githubClient.data.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.paging.LoadState
-import androidx.paging.LoadStateAdapter
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.MultiTransformation
-import com.bumptech.glide.load.Transformation
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestOptions
 import com.example.githubClient.R
 import com.example.githubClient.core.glide.GlideApp
-import com.example.githubClient.core.glide.InvertColorTransformation
-import com.example.githubClient.data.model.GithubBaseUser
 import com.example.githubClient.data.model.GithubUserWithLocalData
 import com.example.githubClient.ui.utils.RoundedCornersTransformation
 
@@ -32,7 +21,7 @@ class GithubUsersSearchAdapter : RecyclerView.Adapter<GithubUsersSearchAdapter.V
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // Inflate your custom view and return the ViewHolder
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.github_user_row, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.github_user_search_row, parent, false))
     }
 
     override fun getItemCount() = differ.currentList.size
@@ -54,13 +43,17 @@ class GithubUsersSearchAdapter : RecyclerView.Adapter<GithubUsersSearchAdapter.V
             .into(holder.avatar)
         // set click listener
         holder.itemView.setOnClickListener {
-            userClickListener?.onUserClicked(user.githubUser)
+            userClickListener?.onUserClicked(user.githubUser, holder.avatar)
         }
+        // set user note if exists
+        holder.note.visibility = if (user.localData?.note != null) View.VISIBLE else View.GONE
+        holder.note.text = user.localData?.note
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         internal val name: AppCompatTextView = view.findViewById(R.id.name)
         internal val avatar: AppCompatImageView = view.findViewById(R.id.user_image)
+        internal val note: AppCompatTextView = view.findViewById(R.id.note)
     }
 
     fun setUserClickListener(userClickListener: UserItemClickListener) {

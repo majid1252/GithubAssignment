@@ -22,18 +22,16 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.retry
+import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.launch
 
 class GithubUsersViewModel @AssistedInject constructor(
     @Assisted private val initialState: GithubUsersViewState,
 ) : GViewModel<GithubUsersViewState, GithubUsersViewAction, GithubUsersViewEvent>(initialState) {
 
-    private val githubUsersRepository = GithubUsersRepository(GithubEndpoint.githubApi , GithubDatabase.getInstance(GithubApp.getContext()))
-    val users: Flow<PagingData<GithubUserWithLocalData>> = githubUsersRepository.getUsers().cachedIn(viewModelScope)
     val queriedUsers: MutableLiveData<List<GithubUserWithLocalData>> = MediatorLiveData()
-    init {
-
-    }
 
     override fun handle(action: GithubUsersViewAction) {
         when (action) {
@@ -42,15 +40,26 @@ class GithubUsersViewModel @AssistedInject constructor(
             }
             is GithubUsersViewAction.QueryUsers           -> {
                 viewModelScope.launch {
-                    queriedUsers.value = githubUsersRepository.searchForUsers(action.query)
+                    if(action.query.isEmpty())
+                        queriedUsers.value = listOf()
+                    else {
+                        val sqlQuery = "*${action.query}*"
+                        queriedUsers.value = GithubUsersRepository.searchForUsers(sqlQuery)
+                    }
                     setState { copy(searchQuery = action.query) }
                 }
             }
         }
     }
 
+    suspend fun getUsers() = GithubUsersRepository.getUsers().cachedIn(viewModelScope)
+
     @AssistedFactory
     interface Factory : MavericksAssistedViewModelFactory<GithubUsersViewModel, GithubUsersViewState> {
         override fun create(initialState: GithubUsersViewState): GithubUsersViewModel
+    }
+
+    companion object {
+        const val CONSTANTS_DEFAULT_PAGE_SIZE: Int = 30
     }
 }

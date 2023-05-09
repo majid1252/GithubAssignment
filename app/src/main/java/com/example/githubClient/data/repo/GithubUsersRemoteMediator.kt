@@ -22,10 +22,10 @@ import kotlin.math.pow
             // Determine the start key based on the LoadType
             val since = when (loadType) {
                 LoadType.REFRESH -> null
-                LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
+                LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = false)
                 LoadType.APPEND  -> {
                     val lastItem = state.lastItemOrNull()
-                        ?: return MediatorResult.Success(endOfPaginationReached = true)
+                        ?: return MediatorResult.Success(endOfPaginationReached = false)
                     lastItem.githubUser.id
                 }
             }
